@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务领域 - 碳咨询 | 绿碳咨询 GreenCarbon Consulting</title>
+    <style>
+        :root {
+            --color-primary: #1B5E20;
+            --color-primary-dark: #0D3B12;
+            --color-primary-light: #2E7D32;
+            --color-secondary: #4CAF50;
+            --color-secondary-light: #81C784;
+            --color-secondary-lighter: #C8E6C9;
+            --color-accent: #C8A951;
+            --color-accent-light: #D4BC7A;
+            --color-white: #FFFFFF;
+            --color-gray-50: #FAFBFC;
+            --color-gray-100: #F5F7F8;
+            --color-gray-200: #E8ECEF;
+            --color-gray-300: #D1D9E0;
+            --color-gray-400: #9AA8B5;
+            --color-gray-500: #6B7D8D;
+            --color-gray-600: #4A5B6A;
+            --color-gray-700: #34404D;
+            --color-gray-800: #1E2A36;
+            --color-gray-900: #0F1923;
+            --color-link: #1B5E20;
+            --color-link-hover: #4CAF50;
+            --color-divider: #E8ECEF;
+            --font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+            --font-size-xs: 12px;
+            --font-size-sm: 13px;
+            --font-size-base: 15px;
+            --font-size-md: 16px;
+            --font-size-lg: 18px;
+            --font-size-xl: 20px;
+            --font-size-2xl: 24px;
+            --font-size-3xl: 28px;
+            --font-size-4xl: 34px;
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --nav-height: 72px;
+            --sidebar-width: 260px;
+            --content-max-width: 960px;
+            --container-max-width: 1280px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.1);
+            --transition-fast: 0.15s ease;
+            --transition-base: 0.25s ease;
+            --transition-slow: 0.35s ease;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{font-size:16px;scroll-behavior:smooth}
+        body{font-family:var(--font-family);font-size:var(--font-size-base);line-height:1.8;color:var(--color-gray-700);background-color:var(--color-white);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+        a{color:var(--color-link);text-decoration:none;transition:color var(--transition-fast)}
+        a:hover{color:var(--color-link-hover)}
+        img{max-width:100%;height:auto}
+        .top-nav{position:fixed;top:0;left:0;right:0;height:var(--nav-height);background:var(--color-white);border-bottom:1px solid var(--color-divider);z-index:1000;backdrop-filter:blur(12px);background:rgba(255,255,255,0.96)}
+        .top-nav-inner{max-width:var(--container-max-width);margin:0 auto;padding:0 var(--space-xl);height:100%;display:flex;align-items:center;justify-content:space-between}
+        .nav-logo{display:flex;align-items:center;gap:var(--space-sm);text-decoration:none}
+        .nav-logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--color-primary),var(--color-secondary));border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;color:var(--color-white);font-weight:700;font-size:var(--font-size-lg)}
+        .nav-logo-text{display:flex;flex-direction:column;line-height:1.2}
+        .nav-logo-text .zh{font-size:var(--font-size-md);font-weight:600;color:var(--color-primary)}
+        .nav-logo-text .en{font-size:var(--font-size-xs);color:var(--color-gray-400);letter-spacing:0.5px}
+        .nav-menu{display:flex;align-items:center;gap:var(--space-xl);list-style:none}
+        .nav-menu a{font-size:var(--font-size-sm);color:var(--color-gray-600);font-weight:500;padding:var(--space-sm) 0;position:relative;transition:color var(--transition-fast)}
+        .nav-menu a:hover,.nav-menu a.active{color:var(--color-primary)}
+        .nav-menu a.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--color-primary);border-radius:1px}
+        .nav-right{display:flex;align-items:center;gap:var(--space-lg)}
+        .lang-switch{display:flex;align-items:center;gap:var(--space-xs);font-size:var(--font-size-xs);color:var(--color-gray-400);cursor:pointer;padding:6px 12px;border:1px solid var(--color-gray-200);border-radius:20px;transition:all var(--transition-fast)}
+        .lang-switch:hover{border-color:var(--color-secondary);color:var(--color-secondary)}
+        .lang-switch .active-lang{color:var(--color-primary);font-weight:600}
+        .nav-contact-btn{display:inline-flex;align-items:center;padding:8px 20px;background:var(--color-primary);color:var(--color-white);font-size:var(--font-size-sm);font-weight:500;border-radius:20px;transition:all var(--transition-fast)}
+        .nav-contact-btn:hover{background:var(--color-primary-light);color:var(--color-white);transform:translateY(-1px);box-shadow:var(--shadow-md)}
+        .breadcrumb-bar{margin-top:var(--nav-height);background:var(--color-gray-50);border-bottom:1px solid var(--color-divider)}
+        .breadcrumb-inner{max-width:var(--container-max-width);margin:0 auto;padding:12px var(--space-xl);display:flex;align-items:center;gap:var(--space-sm);font-size:var(--font-size-sm)}
+        .breadcrumb-item{color:var(--color-gray-400);transition:color var(--transition-fast)}
+        .breadcrumb-item:hover{color:var(--color-secondary)}
+        .breadcrumb-item.current{color:var(--color-gray-700);font-weight:500}
+        .breadcrumb-sep{color:var(--color-gray-300);font-size:var(--font-size-xs)}
+        .main-container{max-width:var(--container-max-width);margin:0 auto;padding:var(--space-2xl) var(--space-xl);display:flex;gap:var(--space-2xl);min-height:calc(100vh - var(--nav-height) - 200px)}
+        .sidebar{width:var(--sidebar-width);flex-shrink:0;position:sticky;top:calc(var(--nav-height) + var(--space-lg));max-height:calc(100vh - var(--nav-height) - var(--space-2xl));overflow-y:auto;align-self:flex-start}
+        .sidebar::-webkit-scrollbar{width:3px}
+        .sidebar::-webkit-scrollbar-thumb{background:var(--color-gray-300);border-radius:3px}
+        .sidebar-section{margin-bottom:var(--space-lg)}
+        .sidebar-section-title{font-size:var(--font-size-sm);font-weight:600;color:var(--color-gray-800);padding:var(--space-sm) var(--space-md);margin-bottom:var(--space-xs);letter-spacing:0.5px;display:flex;align-items:center;gap:var(--space-sm)}
+        .sidebar-section-title .icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:14px}
+        .sidebar-nav{list-style:none}
+        .sidebar-nav li{position:relative}
+        .sidebar-nav a{display:block;padding:8px var(--space-md) 8px 36px;font-size:var(--font-size-sm);color:var(--color-gray-500);border-radius:var(--radius-sm);transition:all var(--transition-fast);line-height:1.6}
+        .sidebar-nav a:hover{color:var(--color-primary);background:var(--color-secondary-lighter)}
+        .sidebar-nav a.active{color:var(--color-primary);background:var(--color-secondary-lighter);font-weight:600}
+        .sidebar-nav a.active::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--color-primary);border-radius:0 3px 3px 0}
+        .sidebar-cta{margin-top:var(--space-lg);padding:var(--space-lg);background:linear-gradient(135deg,var(--color-primary),var(--color-primary-light));border-radius:var(--radius-lg);color:var(--color-white)}
+        .sidebar-cta h4{font-size:var(--font-size-md);margin-bottom:var(--space-sm)}
+        .sidebar-cta p{font-size:var(--font-size-xs);opacity:0.85;line-height:1.6;margin-bottom:var(--space-md)}
+        .sidebar-cta-btn{display:inline-block;padding:6px 16px;background:var(--color-accent);color:var(--color-white);font-size:var(--font-size-xs);font-weight:600;border-radius:16px;transition:all var(--transition-fast)}
+        .sidebar-cta-btn:hover{background:var(--color-accent-light);color:var(--color-white);transform:translateY(-1px)}
+        .content{flex:1;min-width:0;max-width:var(--content-max-width)}
+        .page-header{margin-bottom:var(--space-2xl);padding-bottom:var(--space-lg);border-bottom:1px solid var(--color-divider)}
+        .page-title{font-size:var(--font-size-3xl);font-weight:700;color:var(--color-gray-900);line-height:1.3;margin-bottom:var(--space-sm)}
+        .page-subtitle{font-size:var(--font-size-md);color:var(--color-gray-400);line-height:1.6}
+        .page-meta{display:flex;align-items:center;gap:var(--space-lg);margin-top:var(--space-md);font-size:var(--font-size-xs);color:var(--color-gray-400)}
+        .page-meta-item{display:flex;align-items:center;gap:var(--space-xs)}
+        .content-body h2{font-size:var(--font-size-2xl);font-weight:700;color:var(--color-gray-900);margin-top:var(--space-2xl);margin-bottom:var(--space-md);padding-bottom:var(--space-sm);border-bottom:2px solid var(--color-secondary-lighter);position:relative}
+        .content-body h2::after{content:'';position:absolute;bottom:-2px;left:0;width:60px;height:2px;background:var(--color-primary)}
+        .content-body h3{font-size:var(--font-size-xl);font-weight:600;color:var(--color-gray-800);margin-top:var(--space-xl);margin-bottom:var(--space-md)}
+        .content-body h4{font-size:var(--font-size-lg);font-weight:600;color:var(--color-gray-700);margin-top:var(--space-lg);margin-bottom:var(--space-sm)}
+        .content-body p{margin-bottom:var(--space-lg);line-height:2;color:var(--color-gray-600)}
+        .content-body ul,.content-body ol{margin-bottom:var(--space-lg);padding-left:var(--space-lg)}
+        .content-body li{margin-bottom:var(--space-sm);line-height:1.8;color:var(--color-gray-600)}
+        .highlight-block{background:var(--color-secondary-lighter);border-left:4px solid var(--color-primary);padding:var(--space-lg) var(--space-xl);border-radius:0 var(--radius-md) var(--radius-md) 0;margin:var(--space-xl) 0}
+        .highlight-block p{color:var(--color-primary-dark);margin-bottom:0;font-weight:500}
+        .service-banner{background:linear-gradient(135deg,var(--color-primary) 0%,var(--color-primary-light) 50%,var(--color-secondary) 100%);border-radius:var(--radius-lg);padding:var(--space-2xl);color:var(--color-white);margin:var(--space-xl) 0;position:relative;overflow:hidden}
+        .service-banner::after{content:'';position:absolute;top:-30px;right:-30px;width:180px;height:180px;background:rgba(255,255,255,0.06);border-radius:50%}
+        .service-banner::before{content:'';position:absolute;bottom:-40px;right:60px;width:120px;height:120px;background:rgba(255,255,255,0.04);border-radius:50%}
+        .service-banner h3{color:var(--color-white);font-size:var(--font-size-xl);margin-top:0;margin-bottom:var(--space-sm)}
+        .service-banner p{color:rgba(255,255,255,0.9);font-size:var(--font-size-base);margin-bottom:var(--space-md);line-height:1.8}
+        .service-banner-tags{display:flex;flex-wrap:wrap;gap:var(--space-sm)}
+        .service-banner-tag{display:inline-block;padding:4px 14px;background:rgba(255,255,255,0.18);border-radius:16px;font-size:var(--font-size-xs);color:rgba(255,255,255,0.95);backdrop-filter:blur(4px)}
+        .service-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-md);margin:var(--space-xl) 0;position:relative}
+        .flow-step{text-align:center;padding:var(--space-lg) var(--space-md);background:var(--color-gray-50);border-radius:var(--radius-md);border:1px solid var(--color-gray-200);position:relative;transition:all var(--transition-base)}
+        .flow-step:hover{border-color:var(--color-secondary-light);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
+        .flow-step-number{width:36px;height:36px;background:linear-gradient(135deg,var(--color-primary),var(--color-secondary));color:var(--color-white);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:var(--font-size-sm);font-weight:700;margin-bottom:var(--space-sm)}
+        .flow-step-title{font-size:var(--font-size-md);font-weight:600;color:var(--color-gray-800);margin-bottom:var(--space-xs)}
+        .flow-step-desc{font-size:var(--font-size-xs);color:var(--color-gray-400);line-height:1.6}
+        .service-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);margin:var(--space-xl) 0}
+        .service-detail-card{padding:var(--space-lg);background:var(--color-white);border:1px solid var(--color-gray-200);border-radius:var(--radius-lg);transition:all var(--transition-base)}
+        .service-detail-card:hover{border-color:var(--color-secondary-light);box-shadow:var(--shadow-md)}
+        .service-detail-card .card-icon{width:48px;height:48px;background:var(--color-secondary-lighter);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:var(--space-md)}
+        .service-detail-card h4{margin-top:0;font-size:var(--font-size-md);color:var(--color-primary)}
+        .service-detail-card p{font-size:var(--font-size-sm);margin-bottom:var(--space-sm);line-height:1.7}
+        .service-detail-card .card-link{font-size:var(--font-size-sm);font-weight:500;display:inline-flex;align-items:center;gap:4px}
+        .service-detail-card .card-link:hover{gap:8px}
+        .tier-section{margin:var(--space-xl) 0}
+        .tier-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-md);margin-top:var(--space-lg)}
+        .tier-card{padding:var(--space-lg);background:var(--color-gray-50);border:1px solid var(--color-gray-200);border-radius:var(--radius-lg);text-align:center;transition:all var(--transition-base);position:relative}
+        .tier-card.featured{background:var(--color-white);border-color:var(--color-primary);box-shadow:var(--shadow-md)}
+        .tier-card.featured::before{content:'推荐';position:absolute;top:-10px;left:50%;transform:translateX(-50%);padding:2px 16px;background:var(--color-accent);color:var(--color-white);font-size:var(--font-size-xs);font-weight:600;border-radius:10px}
+        .tier-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+        .tier-name{font-size:var(--font-size-md);font-weight:600;color:var(--color-gray-800);margin-bottom:var(--space-sm)}
+        .tier-desc{font-size:var(--font-size-xs);color:var(--color-gray-400);margin-bottom:var(--space-md);line-height:1.6}
+        .tier-features{list-style:none;text-align:left;margin-bottom:var(--space-md)}
+        .tier-features li{font-size:var(--font-size-sm);color:var(--color-gray-600);padding:6px 0;border-bottom:1px solid var(--color-gray-200);display:flex;align-items:center;gap:var(--space-sm)}
+        .tier-features li:last-child{border-bottom:none}
+        .tier-features .check{color:var(--color-secondary);font-weight:700}
+        .tier-btn{display:inline-block;padding:8px 24px;border-radius:20px;font-size:var(--font-size-sm);font-weight:500;transition:all var(--transition-fast)}
+        .tier-btn-outline{border:1px solid var(--color-primary);color:var(--color-primary);background:transparent}
+        .tier-btn-outline:hover{background:var(--color-primary);color:var(--color-white)}
+        .tier-btn-primary{background:var(--color-primary);color:var(--color-white)}
+        .tier-btn-primary:hover{background:var(--color-primary-light);transform:translateY(-1px)}
+        .case-study{margin:var(--space-xl) 0;padding:var(--space-xl);background:var(--color-gray-50);border-radius:var(--radius-lg);border:1px solid var(--color-gray-200)}
+        .case-study-header{display:flex;align-items:flex-start;gap:var(--space-lg);margin-bottom:var(--space-lg)}
+        .case-study-badge{display:inline-block;padding:4px 12px;background:var(--color-secondary-lighter);color:var(--color-primary);font-size:var(--font-size-xs);font-weight:600;border-radius:12px;margin-bottom:var(--space-sm)}
+        .case-study h3{margin-top:0;font-size:var(--font-size-xl);color:var(--color-gray-900)}
+        .case-study p{font-size:var(--font-size-sm)}
+        .case-study-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-md)}
+        .case-metric{text-align:center;padding:var(--space-md);background:var(--color-white);border-radius:var(--radius-md)}
+        .case-metric-value{font-size:var(--font-size-2xl);font-weight:700;color:var(--color-primary);line-height:1.2}
+        .case-metric-label{font-size:var(--font-size-xs);color:var(--color-gray-400);margin-top:4px}
+        .faq-list{margin:var(--space-xl) 0}
+        .faq-item{border:1px solid var(--color-gray-200);border-radius:var(--radius-md);margin-bottom:var(--space-sm);overflow:hidden}
+        .faq-question{display:flex;align-items:center;justify-content:space-between;padding:var(--space-md) var(--space-lg);background:var(--color-gray-50);font-size:var(--font-size-md);font-weight:500;color:var(--color-gray-800);cursor:pointer;transition:all var(--transition-fast)}
+        .faq-question:hover{background:var(--color-secondary-lighter)}
+        .faq-question .toggle{color:var(--color-primary);font-size:var(--font-size-lg);font-weight:300}
+        .faq-answer{padding:var(--space-md) var(--space-lg);font-size:var(--font-size-sm);color:var(--color-gray-600);line-height:1.8;border-top:1px solid var(--color-gray-200)}
+        .related-section{margin-top:var(--space-3xl);padding-top:var(--space-xl);border-top:1px solid var(--color-divider)}
+        .related-title{font-size:var(--font-size-lg);font-weight:600;color:var(--color-gray-800);margin-bottom:var(--space-md)}
+        .related-links{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)}
+        .related-link{display:flex;align-items:center;gap:var(--space-sm);padding:var(--space-md);background:var(--color-gray-50);border:1px solid var(--color-gray-200);border-radius:var(--radius-md);font-size:var(--font-size-sm);color:var(--color-gray-600);transition:all var(--transition-fast)}
+        .related-link:hover{border-color:var(--color-secondary-light);background:var(--color-secondary-lighter);color:var(--color-primary)}
+        .related-link .arrow{margin-left:auto;color:var(--color-gray-300);transition:all var(--transition-fast)}
+        .related-link:hover .arrow{color:var(--color-primary);transform:translateX(4px)}
+        .footer{background:var(--color-gray-900);color:var(--color-gray-400);margin-top:var(--space-3xl)}
+        .footer-inner{max-width:var(--container-max-width);margin:0 auto;padding:var(--space-2xl) var(--space-xl)}
+        .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:var(--space-2xl);padding-bottom:var(--space-xl);border-bottom:1px solid rgba(255,255,255,0.08)}
+        .footer-brand .logo-row{display:flex;align-items:center;gap:var(--space-sm);margin-bottom:var(--space-md)}
+        .footer-brand .logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--color-secondary),var(--color-primary));border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;color:var(--color-white);font-weight:700;font-size:var(--font-size-md)}
+        .footer-brand .logo-name{color:var(--color-white);font-size:var(--font-size-md);font-weight:600}
+        .footer-brand p{font-size:var(--font-size-sm);line-height:1.8;color:var(--color-gray-500)}
+        .footer-col h5{color:var(--color-white);font-size:var(--font-size-sm);font-weight:600;margin-bottom:var(--space-md)}
+        .footer-col ul{list-style:none}
+        .footer-col li{margin-bottom:var(--space-sm)}
+        .footer-col a{color:var(--color-gray-500);font-size:var(--font-size-sm);transition:color var(--transition-fast)}
+        .footer-col a:hover{color:var(--color-secondary-light)}
+        .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:var(--space-lg);font-size:var(--font-size-xs);color:var(--color-gray-600)}
+        .footer-bottom-links{display:flex;gap:var(--space-lg)}
+        .footer-bottom-links a{color:var(--color-gray-600)}
+        .footer-bottom-links a:hover{color:var(--color-gray-400)}
+        @media(max-width:1024px){.sidebar{width:220px}.service-flow{grid-template-columns:repeat(2,1fr)}.tier-cards{grid-template-columns:1fr}}
+        @media(max-width:768px){.main-container{flex-direction:column;padding:var(--space-lg)}.sidebar{width:100%;position:static;max-height:none}.service-flow{grid-template-columns:1fr}.service-detail-grid{grid-template-columns:1fr}.tier-cards{grid-template-columns:1fr}.case-study-metrics{grid-template-columns:1fr}.related-links{grid-template-columns:1fr}.footer-top{grid-template-columns:1fr 1fr}}
+    </style>
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">GC</div>
+                <div class="nav-logo-text">
+                    <span class="zh">绿碳咨询</span>
+                    <span class="en">GREENCARBON CONSULTING</span>
+                </div>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">关于我们</a></li>
+                <li><a href="#" class="active">服务领域</a></li>
+                <li><a href="#">新闻资讯</a></li>
+                <li><a href="#">项目合作</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="lang-switch">
+                    <span class="active-lang">中</span>
+                    <span>/</span>
+                    <span>EN</span>
+                </div>
+                <a href="#" class="nav-contact-btn">联系我们</a>
+            </div>
+        </div>
+    </nav>
+    <div class="breadcrumb-bar">
+        <div class="breadcrumb-inner">
+            <a href="#" class="breadcrumb-item">首页</a>
+            <span class="breadcrumb-sep">/</span>
+            <a href="#" class="breadcrumb-item">服务领域</a>
+            <span class="breadcrumb-sep">/</span>
+            <span class="breadcrumb-item current">碳咨询</span>
+        </div>
+    </div>
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-section-title"><span class="icon">&#9670;</span>关于我们</div>
+                <ul class="sidebar-nav">
+                    <li><a href="#">公司简介</a></li>
+                    <li><a href="#">发展历程</a></li>
+                    <li><a href="#">团队介绍</a></li>
+                    <li><a href="#">资质荣誉</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title"><span class="icon">&#9670;</span>服务领域</div>
+                <ul class="sidebar-nav">
+                    <li><a href="#" class="active">碳咨询</a></li>
+                    <li><a href="#">碳管理</a></li>
+                    <li><a href="#">碳交易</a></li>
+                    <li><a href="#">绿色金融</a></li>
+                    <li><a href="#">ESG咨询</a></li>
+                    <li><a href="#">碳中和规划</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title"><span class="icon">&#9670;</span>新闻资讯</div>
+                <ul class="sidebar-nav">
+                    <li><a href="#">公司新闻</a></li>
+                    <li><a href="#">行业动态</a></li>
+                    <li><a href="#">专业见解</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title"><span class="icon">&#9670;</span>项目合作</div>
+                <ul class="sidebar-nav">
+                    <li><a href="#">合作案例</a></li>
+                    <li><a href="#">合作伙伴</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-cta">
+                <h4>获取方案</h4>
+                <p>根据您的行业特点与业务需求，定制专属碳咨询解决方案</p>
+                <a href="#" class="sidebar-cta-btn">免费咨询</a>
+            </div>
+        </aside>
+        <main class="content">
+            <div class="page-header">
+                <h1 class="page-title">碳咨询</h1>
+                <p class="page-subtitle">专业碳咨询服务，助力企业精准掌握碳排放现状，科学制定减排路径</p>
+                <div class="page-meta">
+                    <span class="page-meta-item">&#128203; 最后更新：2026年4月</span>
+                    <span class="page-meta-item">&#128065; 阅读量：5,217</span>
+                </div>
+            </div>
+            <div class="content-body">
+                <div class="service-banner">
+                    <h3>全链条碳咨询服务体系</h3>
+                    <p>绿碳咨询提供覆盖碳排放核算、碳足迹分析、碳目标设定、减排路径规划及碳资产管理的全链条咨询服务，帮助企业系统化应对碳约束挑战，把握绿色转型机遇。</p>
+                    <div class="service-banner-tags">
+                        <span class="service-banner-tag">ISO 14064</span>
+                        <span class="service-banner-tag">GHG Protocol</span>
+                        <span class="service-banner-tag">SBTi</span>
+                        <span class="service-banner-tag">CDP</span>
+                        <span class="service-banner-tag">TCFD</span>
+                    </div>
+                </div>
+                <h2>服务概述</h2>
+                <p>在全球碳中和趋势加速推进的背景下，碳咨询已成为企业绿色转型的重要起点。绿碳咨询的碳咨询服务基于国际通行标准与国内政策法规，为企业提供科学、精准、可落地的碳排放管理方案。</p>
+                <p>我们的碳咨询团队由具备注册碳审计师、ISO 14064主任核查员等资质的资深专家组成，累计完成超过200个碳咨询项目，覆盖能源、制造、交通、建筑、金融等十余个行业领域。</p>
+                <div class="highlight-block">
+                    <p>碳咨询是企业碳管理的第一步，也是最重要的一步。只有精准掌握碳排放现状，才能科学制定减排目标，有效规划碳中和路径。</p>
+                </div>
+                <h2>服务流程</h2>
+                <div class="service-flow">
+                    <div class="flow-step">
+                        <div class="flow-step-number">1</div>
+                        <div class="flow-step-title">需求诊断</div>
+                        <div class="flow-step-desc">深入了解企业业务特点、碳排放现状与合规需求</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-step-number">2</div>
+                        <div class="flow-step-title">碳盘查</div>
+                        <div class="flow-step-desc">按照ISO 14064标准，全面核算组织层面碳排放</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-step-number">3</div>
+                        <div class="flow-step-title">路径规划</div>
+                        <div class="flow-step-desc">基于数据制定科学减排目标与实施路径</div>
+                    </div>
+                    <div class="flow-step">
+                        <div class="flow-step-number">4</div>
+                        <div class="flow-step-title">持续优化</div>
+                        <div class="flow-step-desc">定期复盘与优化，确保减排成效持续提升</div>
+                    </div>
+                </div>
+                <h2>核心服务内容</h2>
+                <div class="service-detail-grid">
+                    <div class="service-detail-card">
+                        <div class="card-icon">&#127758;</div>
+                        <h4>温室气体盘查</h4>
+                        <p>依据ISO 14064-1及GHG Protocol标准，对企业组织层面的范围一、范围二、范围三温室气体排放进行全面核算与报告编制。</p>
+                        <a href="#" class="card-link">了解详情 &#8594;</a>
+                    </div>
+                    <div class="service-detail-card">
+                        <div class="card-icon">&#128202;</div>
+                        <h4>产品碳足迹</h4>
+                        <p>基于ISO 14067标准，对产品全生命周期的碳排放进行量化分析，识别减排热点，支撑绿色产品认证与市场声明。</p>
+                        <a href="#" class="card-link">了解详情 &#8594;</a>
+                    </div>
+                    <div class="service-detail-card">
+                        <div class="card-icon">&#127793;</div>
+                        <h4>科学碳目标设定</h4>
+                        <p>协助企业制定符合SBTi（科学碳目标倡议）要求的减排目标，确保目标与气候科学一致，提升企业气候领导力。</p>
+                        <a href="#" class="card-link">了解详情 &#8594;</a>
+                    </div>
+                    <div class="service-detail-card">
+                        <div class="card-icon">&#128200;</div>
+                        <h4>碳信息披露</h4>
+                        <p>支持企业完成CDP问卷、TCFD报告等国际碳信息披露要求，提升ESG评级与投资者信心。</p>
+                        <a href="#" class="card-link">了解详情 &#8594;</a>
+                    </div>
+                </div>
+                <h2>服务方案</h2>
+                <div class="tier-section">
+                    <div class="tier-cards">
+                        <div class="tier-card">
+                            <div class="tier-name">基础版</div>
+                            <div class="tier-desc">适合初次开展碳管理的中小企业</div>
+                            <ul class="tier-features">
+                                <li><span class="check">&#10003;</span> 组织碳盘查（范围一、二）</li>
+                                <li><span class="check">&#10003;</span> 碳排放报告编制</li>
+                                <li><span class="check">&#10003;</span> 基础减排建议</li>
+                                <li><span class="check">&#10003;</span> 1次现场调研</li>
+                            </ul>
+                            <a href="#" class="tier-btn tier-btn-outline">咨询详情</a>
+                        </div>
+                        <div class="tier-card featured">
+                            <div class="tier-name">专业版</div>
+                            <div class="tier-desc">适合有碳合规与转型需求的中大型企业</div>
+                            <ul class="tier-features">
+                                <li><span class="check">&#10003;</span> 组织碳盘查（范围一、二、三）</li>
+                                <li><span class="check">&#10003;</span> 产品碳足迹分析</li>
+                                <li><span class="check">&#10003;</span> 科学碳目标设定</li>
+                                <li><span class="check">&#10003;</span> 减排路径规划</li>
+                                <li><span class="check">&#10003;</span> CDP/TCFD披露支持</li>
+                                <li><span class="check">&#10003;</span> 2次现场调研 + 季度复盘</li>
+                            </ul>
+                            <a href="#" class="tier-btn tier-btn-primary">咨询详情</a>
+                        </div>
+                        <div class="tier-card">
+                            <div class="tier-name">旗舰版</div>
+                            <div class="tier-desc">适合集团型企业及碳中和战略规划</div>
+                            <ul class="tier-features">
+                                <li><span class="check">&#10003;</span> 专业版全部内容</li>
+                                <li><span class="check">&#10003;</span> 集团碳管理体系搭建</li>
+                                <li><span class="check">&#10003;</span> 碳中和路径规划</li>
+                                <li><span class="check">&#10003;</span> 供应链碳管理</li>
+                                <li><span class="check">&#10003;</span> 碳管理SaaS平台部署</li>
+                                <li><span class="check">&#10003;</span> 专属顾问 + 月度复盘</li>
+                            </ul>
+                            <a href="#" class="tier-btn tier-btn-outline">咨询详情</a>
+                        </div>
+                    </div>
+                </div>
+                <h2>成功案例</h2>
+                <div class="case-study">
+                    <div class="case-study-header">
+                        <div>
+                            <span class="case-study-badge">制造业</span>
+                            <h3>某大型钢铁集团碳管理体系建设项目</h3>
+                            <p>该集团年粗钢产量超2000万吨，面临全国碳市场纳入与欧盟CBAM双重合规压力。绿碳咨询团队为其搭建了覆盖集团总部及12个生产基地的碳管理体系，完成组织碳盘查与产品碳足迹核算，制定科学碳目标与分阶段减排路径。</p>
+                        </div>
+                    </div>
+                    <div class="case-study-metrics">
+                        <div class="case-metric">
+                            <div class="case-metric-value">12</div>
+                            <div class="case-metric-label">覆盖生产基地</div>
+                        </div>
+                        <div class="case-metric">
+                            <div class="case-metric-value">18%</div>
+                            <div class="case-metric-label">年度减排目标</div>
+                        </div>
+                        <div class="case-metric">
+                            <div class="case-metric-value">6个月</div>
+                            <div class="case-metric-label">项目交付周期</div>
+                        </div>
+                    </div>
+                </div>
+                <h2>常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>碳咨询与碳盘查有什么区别？</span>
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="faq-answer">碳盘查是碳咨询的核心环节之一，侧重于对组织或产品的温室气体排放进行量化核算。碳咨询则是一个更全面的服务体系，除碳盘查外，还包括碳排放分析、减排目标设定、路径规划、碳信息披露、碳资产管理等全链条服务。碳盘查是基础，碳咨询是系统化解决方案。</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>企业什么阶段需要引入碳咨询服务？</span>
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="faq-answer">企业在以下阶段应考虑引入碳咨询：(1) 面临碳市场纳入或碳排放配额管理要求时；(2) 需要满足供应链碳管理要求或客户碳披露需求时；(3) 计划制定碳中和战略与科学碳目标时；(4) 需要应对欧盟CBAM等国际碳关税政策时；(5) 希望提升ESG评级与绿色品牌形象时。越早引入碳咨询，越能掌握主动权。</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>碳咨询项目一般需要多长时间？</span>
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="faq-answer">项目周期取决于服务范围与企业规模。基础碳盘查项目通常需要2-3个月，涵盖范围三的全面碳盘查约需3-4个月，包含科学碳目标设定与减排路径规划的综合项目通常需要4-6个月。集团型企业或涉及多基地的项目可能需要6-12个月。我们会在项目启动前提供详细的时间规划。</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>绿碳咨询的碳咨询资质有哪些？</span>
+                            <span class="toggle">+</span>
+                        </div>
+                        <div class="faq-answer">绿碳咨询拥有ISO 14064温室气体核查资质、全国碳排放权交易第三方核查机构资质、CDP官方解决方案合作伙伴资质。核心团队成员持有注册碳审计师、ISO 14064主任核查员、CFA ESG投资证书等国际认证。</div>
+                    </div>
+                </div>
+                <div class="related-section">
+                    <h3 class="related-title">相关服务</h3>
+                    <div class="related-links">
+                        <a href="#" class="related-link"><span>&#9679; 碳管理</span><span class="arrow">&#8594;</span></a>
+                        <a href="#" class="related-link"><span>&#9679; 碳交易</span><span class="arrow">&#8594;</span></a>
+                        <a href="#" class="related-link"><span>&#9679; 绿色金融</span><span class="arrow">&#8594;</span></a>
+                        <a href="#" class="related-link"><span>&#9679; ESG咨询</span><span class="arrow">&#8594;</span></a>
+                        <a href="#" class="related-link"><span>&#9679; 碳中和规划</span><span class="arrow">&#8594;</span></a>
+                        <a href="#" class="related-link"><span>&#9679; 合作案例</span><span class="arrow">&#8594;</span></a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="logo-row">
+                        <div class="logo-icon">GC</div>
+                        <span class="logo-name">绿碳咨询</span>
+                    </div>
+                    <p>绿碳咨询致力于成为中国领先的绿色碳咨询服务提供商，以专业力量推动经济社会绿色低碳转型，助力企业实现可持续发展目标。</p>
+                </div>
+                <div class="footer-col">
+                    <h5>关于我们</h5>
+                    <ul>
+                        <li><a href="#">公司简介</a></li>
+                        <li><a href="#">发展历程</a></li>
+                        <li><a href="#">团队介绍</a></li>
+                        <li><a href="#">资质荣誉</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>服务领域</h5>
+                    <ul>
+                        <li><a href="#">碳咨询</a></li>
+                        <li><a href="#">碳管理</a></li>
+                        <li><a href="#">碳交易</a></li>
+                        <li><a href="#">绿色金融</a></li>
+                        <li><a href="#">ESG咨询</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>联系方式</h5>
+                    <ul>
+                        <li><a href="#">北京市朝阳区建国路88号</a></li>
+                        <li><a href="#">contact@greencarbon.cn</a></li>
+                        <li><a href="#">400-888-9527</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 绿碳咨询 GreenCarbon Consulting. All rights reserved.</span>
+                <div class="footer-bottom-links">
+                    <a href="#">隐私政策</a>
+                    <a href="#">使用条款</a>
+                    <a href="#">网站地图</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
