@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绿色碳咨询 - 管理后台 - 新闻管理</title>
+    <style>
+        /* ========== Reset & Base ========== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .layout { display: flex; min-height: 100vh; }
+
+        /* ========== Sidebar (same as dashboard) ========== */
+        .sidebar {
+            width: 240px; background: #001529; flex-shrink: 0;
+            display: flex; flex-direction: column;
+            position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+        }
+
+        .sidebar-logo {
+            height: 64px; display: flex; align-items: center;
+            padding: 0 20px; background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .sidebar-logo .logo-icon {
+            width: 32px; height: 32px; background: #1B5E20;
+            border-radius: 8px; display: flex; align-items: center;
+            justify-content: center; margin-right: 12px;
+        }
+
+        .sidebar-logo .logo-icon svg { width: 20px; height: 20px; fill: #fff; }
+        .sidebar-logo .logo-text { color: #fff; font-size: 16px; font-weight: 600; white-space: nowrap; }
+
+        .sidebar-menu { flex: 1; overflow-y: auto; padding: 8px 0; }
+
+        .menu-group-title {
+            padding: 16px 24px 8px; font-size: 12px;
+            color: rgba(255,255,255,0.35); letter-spacing: 1px;
+        }
+
+        .menu-item {
+            display: flex; align-items: center; padding: 0 24px;
+            height: 44px; color: rgba(255,255,255,0.65); font-size: 14px;
+            cursor: pointer; transition: all 0.3s; text-decoration: none; gap: 10px;
+        }
+
+        .menu-item:hover { color: #fff; background: rgba(255,255,255,0.08); }
+        .menu-item.active { color: #fff; background: #1B5E20; }
+
+        .menu-item .menu-icon { width: 18px; height: 18px; flex-shrink: 0; }
+        .menu-item .menu-icon svg { width: 18px; height: 18px; fill: currentColor; }
+
+        .menu-item .arrow { margin-left: auto; font-size: 10px; transition: transform 0.3s; }
+        .menu-item.expanded .arrow { transform: rotate(90deg); }
+
+        .submenu-list { display: none; }
+        .submenu-list.show { display: block; }
+        .submenu-list .menu-item { padding-left: 52px; height: 40px; font-size: 13px; }
+
+        /* ========== Main Content ========== */
+        .main-content {
+            flex: 1; margin-left: 240px;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        /* ========== Top Header ========== */
+        .top-header {
+            height: 64px; background: #fff; display: flex;
+            align-items: center; justify-content: space-between;
+            padding: 0 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            position: sticky; top: 0; z-index: 50;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .breadcrumb { font-size: 14px; color: #8c8c8c; }
+        .breadcrumb span { color: #333; }
+
+        .header-right { display: flex; align-items: center; gap: 20px; }
+
+        .header-notification {
+            width: 36px; height: 36px; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; border-radius: 50%;
+            transition: background 0.3s; position: relative;
+        }
+
+        .header-notification:hover { background: #f5f5f5; }
+        .header-notification svg { width: 20px; height: 20px; fill: #666; }
+
+        .notification-dot {
+            position: absolute; top: 6px; right: 6px;
+            width: 8px; height: 8px; background: #f5222d;
+            border-radius: 50%; border: 1px solid #fff;
+        }
+
+        .admin-info {
+            display: flex; align-items: center; gap: 10px;
+            cursor: pointer; padding: 4px 8px; border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .admin-info:hover { background: #f5f5f5; }
+
+        .admin-avatar {
+            width: 32px; height: 32px; background: #1B5E20;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; color: #fff; font-size: 14px; font-weight: 500;
+        }
+
+        .admin-name { font-size: 14px; color: #333; }
+        .admin-role { font-size: 12px; color: #8c8c8c; }
+
+        .logout-btn {
+            font-size: 14px; color: #8c8c8c; cursor: pointer;
+            padding: 6px 12px; border-radius: 4px; transition: all 0.3s; text-decoration: none;
+        }
+
+        .logout-btn:hover { color: #f5222d; background: #fff1f0; }
+
+        /* ========== Page Content ========== */
+        .page-content { padding: 24px; flex: 1; }
+
+        .page-title {
+            font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 24px;
+        }
+
+        /* ========== Filter Bar ========== */
+        .filter-bar {
+            background: #fff; border-radius: 8px; padding: 20px 24px;
+            margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px;
+        }
+
+        .filter-group { display: flex; flex-direction: column; gap: 6px; }
+
+        .filter-group label {
+            font-size: 13px; color: #595959; font-weight: 500;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            height: 36px; padding: 0 12px; border: 1px solid #d9d9d9;
+            border-radius: 6px; font-size: 14px; color: #333;
+            outline: none; transition: border-color 0.3s;
+            min-width: 180px;
+        }
+
+        .filter-group input:hover,
+        .filter-group select:hover { border-color: #1B5E20; }
+
+        .filter-group input:focus,
+        .filter-group select:focus {
+            border-color: #1B5E20; box-shadow: 0 0 0 2px rgba(27,94,32,0.12);
+        }
+
+        .filter-actions {
+            display: flex; gap: 10px; margin-left: auto; align-self: flex-end;
+        }
+
+        /* ========== Buttons ========== */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            height: 36px; padding: 0 16px; border: 1px solid #d9d9d9;
+            border-radius: 6px; font-size: 14px; cursor: pointer;
+            transition: all 0.3s; gap: 6px; background: #fff; color: #333;
+            white-space: nowrap;
+        }
+
+        .btn:hover { border-color: #1B5E20; color: #1B5E20; }
+
+        .btn-primary {
+            background: #1B5E20; color: #fff; border-color: #1B5E20;
+        }
+
+        .btn-primary:hover {
+            background: #2E7D32; border-color: #2E7D32; color: #fff;
+            box-shadow: 0 2px 8px rgba(27,94,32,0.3);
+        }
+
+        .btn-success {
+            background: #52c41a; color: #fff; border-color: #52c41a;
+        }
+
+        .btn-success:hover {
+            background: #73d13d; border-color: #73d13d; color: #fff;
+        }
+
+        .btn-warning {
+            background: #fa8c16; color: #fff; border-color: #fa8c16;
+        }
+
+        .btn-warning:hover {
+            background: #ffa940; border-color: #ffa940; color: #fff;
+        }
+
+        .btn-danger {
+            color: #f5222d; border-color: #ffa39e; background: #fff1f0;
+        }
+
+        .btn-danger:hover {
+            background: #f5222d; color: #fff; border-color: #f5222d;
+        }
+
+        .btn-link {
+            border: none; background: none; color: #1B5E20;
+            padding: 0 6px; height: auto;
+        }
+
+        .btn-link:hover { color: #2E7D32; background: none; }
+        .btn-link.danger { color: #f5222d; }
+        .btn-link.danger:hover { color: #ff4d4f; }
+
+        .btn-sm { height: 28px; padding: 0 10px; font-size: 12px; }
+
+        /* ========== Toolbar ========== */
+        .toolbar {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .toolbar-left { display: flex; gap: 10px; }
+
+        .toolbar-right { font-size: 13px; color: #8c8c8c; }
+
+        /* ========== Table ========== */
+        .table-card {
+            background: #fff; border-radius: 8px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden;
+        }
+
+        .data-table {
+            width: 100%; border-collapse: collapse;
+        }
+
+        .data-table thead th {
+            background: #fafafa; padding: 14px 16px; text-align: left;
+            font-size: 13px; color: #8c8c8c; font-weight: 600;
+            border-bottom: 1px solid #f0f0f0; white-space: nowrap;
+        }
+
+        .data-table tbody td {
+            padding: 14px 16px; font-size: 14px; color: #333;
+            border-bottom: 1px solid #f5f5f5; vertical-align: middle;
+        }
+
+        .data-table tbody tr:hover td { background: #fafafa; }
+        .data-table tbody tr:last-child td { border-bottom: none; }
+
+        .data-table .checkbox-col { width: 48px; text-align: center; }
+        .data-table .checkbox-col input[type="checkbox"] {
+            width: 16px; height: 16px; accent-color: #1B5E20; cursor: pointer;
+        }
+
+        .data-table .id-col { width: 60px; color: #8c8c8c; font-size: 13px; }
+
+        .data-table .title-cell {
+            max-width: 320px; overflow: hidden; text-overflow: ellipsis;
+            white-space: nowrap; font-weight: 500;
+        }
+
+        .data-table .category-tag {
+            display: inline-block; padding: 2px 10px; border-radius: 4px;
+            font-size: 12px; background: #f0f0f0; color: #595959;
+        }
+
+        .data-table .category-tag.policy { background: #E8F5E9; color: #1B5E20; }
+        .data-table .category-tag.industry { background: #E3F2FD; color: #1565C0; }
+        .data-table .category-tag.tech { background: #FFF3E0; color: #E65100; }
+        .data-table .category-tag.notice { background: #F3E5F5; color: #6A1B9A; }
+
+        .status-tag {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 2px 10px; border-radius: 4px; font-size: 12px;
+        }
+
+        .status-tag::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%;
+        }
+
+        .status-tag.online { background: #f6ffed; color: #52c41a; border: 1px solid #b7eb8f; }
+        .status-tag.online::before { background: #52c41a; }
+
+        .status-tag.offline { background: #fff1f0; color: #f5222d; border: 1px solid #ffa39e; }
+        .status-tag.offline::before { background: #f5222d; }
+
+        .status-tag.draft { background: #fff7e6; color: #fa8c16; border: 1px solid #ffd591; }
+        .status-tag.draft::before { background: #fa8c16; }
+
+        .top-tag {
+            display: inline-block; padding: 1px 6px; border-radius: 3px;
+            font-size: 11px; background: #f5222d; color: #fff; margin-left: 6px;
+            vertical-align: middle;
+        }
+
+        .action-btns { display: flex; gap: 4px; flex-wrap: nowrap; }
+
+        /* ========== Pagination ========== */
+        .pagination-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px; border-top: 1px solid #f0f0f0;
+        }
+
+        .pagination-info { font-size: 13px; color: #8c8c8c; }
+
+        .pagination {
+            display: flex; align-items: center; gap: 4px;
+        }
+
+        .pagination .page-item {
+            min-width: 32px; height: 32px; display: flex; align-items: center;
+            justify-content: center; border: 1px solid #d9d9d9; border-radius: 6px;
+            font-size: 14px; color: #333; cursor: pointer; transition: all 0.3s;
+            background: #fff; padding: 0 8px;
+        }
+
+        .pagination .page-item:hover { border-color: #1B5E20; color: #1B5E20; }
+
+        .pagination .page-item.active {
+            background: #1B5E20; color: #fff; border-color: #1B5E20;
+        }
+
+        .pagination .page-item.disabled {
+            color: #d9d9d9; cursor: not-allowed; border-color: #d9d9d9;
+        }
+
+        .pagination .page-size {
+            margin-left: 12px; font-size: 13px; color: #8c8c8c;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .pagination .page-size select {
+            height: 32px; padding: 0 8px; border: 1px solid #d9d9d9;
+            border-radius: 6px; font-size: 13px; outline: none;
+        }
+
+        /* ========== Modal ========== */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.45); z-index: 1000;
+            align-items: center; justify-content: center;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            background: #fff; border-radius: 8px; width: 520px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+        }
+
+        .modal-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 24px; border-bottom: 1px solid #f0f0f0;
+        }
+
+        .modal-header h3 { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+
+        .modal-close {
+            width: 28px; height: 28px; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; border-radius: 4px;
+            font-size: 18px; color: #8c8c8c; transition: all 0.3s;
+            background: none; border: none;
+        }
+
+        .modal-close:hover { background: #f5f5f5; color: #333; }
+
+        .modal-body { padding: 24px; }
+
+        .modal-footer {
+            display: flex; justify-content: flex-end; gap: 10px;
+            padding: 16px 24px; border-top: 1px solid #f0f0f0;
+        }
+
+        .confirm-text { font-size: 14px; color: #333; line-height: 1.6; }
+        .confirm-text strong { color: #f5222d; }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 1200px) {
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .filter-actions { margin-left: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- ========== Sidebar ========== -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+                </div>
+                <span class="logo-text">绿色碳咨询后台</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <div class="menu-group-title">主菜单</div>
+
+                <a href="admin-dashboard.html" class="menu-item">
+                    <span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M3,13h8V3H3V13z M3,21h8v-6H3V21z M13,21h8V11h-8V21z M13,3v6h8V3H13z"/></svg></span>
+                    首页仪表盘
+                </a>
+
+                <div>
+                    <div class="menu-item expanded" onclick="toggleSubmenu(this)">
+                        <span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V5C21,3.9,20.1,3,19,3z M17,13H7v-2h10V13z M13,17H7v-2h6V17z M17,9H7V7h10V9z"/></svg></span>
+                        新闻管理
+                        <span class="arrow">&#9654;</span>
+                    </div>
+                    <div class="submenu-list show">
+                        <a href="admin-news.html" class="menu-item active">新闻列表</a>
+                        <a href="javascript:void(0)" class="menu-item">发布新闻</a>
+                        <a href="javascript:void(0)" class="menu-item">分类管理</a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="menu-item" onclick="toggleSubmenu(this)">
+                        <span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M21,19V5c0-1.1-0.9-2-2-2H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14C20.1,21,21,20.1,21,19z M8.5,13.5l2.5,3.01L14.5,12l4.5,6H5L8.5,13.5z"/></svg></span>
+                        Banner管理
+                        <span class="arrow">&#9654;</span>
+                    </div>
+                    <div class="submenu-list">
+                        <a href="admin-banner.html" class="menu-item">轮播图列表</a>
+                        <a href="javascript:void(0)" class="menu-item">添加轮播图</a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="menu-item" onclick="toggleSubmenu(this)">
+                        <span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M14,2H6C4.9,2,4,2.9,4,4v16c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2V8L14,2z M16,18H8v-2h8V18z M16,14H8v-2h8V14z M13,9V3.5L18.5,9H13z"/></svg></span>
+                        内容管理
+                        <span class="arrow">&#9654;</span>
+                    </div>
+                    <div class="submenu-list">
+                        <a href="javascript:void(0)" class="menu-item">板块内容编辑</a>
+                        <a href="javascript:void(0)" class="menu-item">图片资源管理</a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="menu-item" onclick="toggleSubmenu(this)">
+                        <span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M12,7V3H2v18h20V7H12z M6,19H4v-2h2V19z M6,15H4v-2h2V15z M6,11H4V9h2V11z M6,7H4V5h2V7z M10,19H8v-2h2V19z M10,15H8v-2h2V15z M10,11H8V9h2V11z M10,7H8V5h2V7z M20,19h-8v-2h2v-2h-2v-2h2v-2h-2V9h8V19z M18,11h-2v2h2V11z M18,15h-2v2h2V15z"/></svg></span>
+                        项目管理
+                        <span class="arrow">&#9654;</span>
+                    </div>
+                    <div class="submenu-list">
+                        <a href="javascript:void(0)" class="menu-item">项目列表</a>
+                        <a href="javascript:void(0)" class="menu-item">发布项目</a>
+                    </div>
+                </div>
+
+                <div class="menu-group-title">系统</div>
+
+                <div>
+                    <div class="menu-item" onclick="toggleSubmenu(this)">
+                        <span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg></span>
+                        系统设置
+                        <span class="arrow">&#9654;</span>
+                    </div>
+                    <div class="submenu-list">
+                        <a href="javascript:void(0)" class="menu-item">管理员管理</a>
+                        <a href="javascript:void(0)" class="menu-item">网站设置</a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- ========== Main ========== -->
+        <div class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="breadcrumb">新闻管理 / <span>新闻列表</span></div>
+                </div>
+                <div class="header-right">
+                    <div class="header-notification">
+                        <svg viewBox="0 0 24 24"><path d="M12,22c1.1,0,2-0.9,2-2h-4C10,21.1,10.9,22,12,22z M18,16v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-0.83-0.67-1.5-1.5-1.5S10.5,3.17,10.5,4v0.68C7.64,5.36,6,7.92,6,11v5l-2,2v1h16v-1L18,16z"/></svg>
+                        <span class="notification-dot"></span>
+                    </div>
+                    <div class="admin-info">
+                        <div class="admin-avatar">管</div>
+                        <div>
+                            <div class="admin-name">管理员</div>
+                            <div class="admin-role">超级管理员</div>
+                        </div>
+                    </div>
+                    <a href="admin-login.html" class="logout-btn">退出登录</a>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <h1 class="page-title">新闻列表</h1>
+
+                <!-- Filter Bar -->
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>关键词搜索</label>
+                        <input type="text" placeholder="搜索新闻标题..." />
+                    </div>
+                    <div class="filter-group">
+                        <label>分类</label>
+                        <select>
+                            <option value="">全部分类</option>
+                            <option value="policy">政策法规</option>
+                            <option value="industry">行业动态</option>
+                            <option value="tech">技术前沿</option>
+                            <option value="notice">通知公告</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>状态</label>
+                        <select>
+                            <option value="">全部状态</option>
+                            <option value="online">已上线</option>
+                            <option value="offline">已下线</option>
+                            <option value="draft">草稿</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>发布时间</label>
+                        <input type="date" />
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M15.5,14h-0.79l-0.28-0.27C15.41,12.59,16,11.11,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5S5.91,16,9.5,16c1.61,0,3.09-0.59,4.23-1.57L14,14.71v0.79l5,4.99L20.49,19L15.5,14z M9.5,14C7.01,14,5,11.99,5,9.5S7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14z"/></svg>
+                            搜索
+                        </button>
+                        <button class="btn">重置</button>
+                    </div>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <div class="toolbar-left">
+                        <button class="btn btn-primary" onclick="showModal('add')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19,13h-6v6h-2v-6H5v-2h6V5h2v6h6V13z"/></svg>
+                            发布新闻
+                        </button>
+                        <button class="btn btn-danger" onclick="showModal('batchDelete')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6,19c0,1.1,0.9,2,2,2h8c1.1,0,2-0.9,2-2V7H6V19z M19,4h-3.5l-1-1h-5l-1,1H5v2h14V4z"/></svg>
+                            批量删除
+                        </button>
+                        <button class="btn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19,9h-4V3H9v6H5l7,7L19,9z M5,18v2h14v-2H5z"/></svg>
+                            导出
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        共 <strong style="color: #1B5E20;">128</strong> 条新闻
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-col"><input type="checkbox" onclick="toggleAll(this)"/></th>
+                                <th class="id-col">ID</th>
+                                <th>标题</th>
+                                <th>分类</th>
+                                <th>状态</th>
+                                <th>浏览量</th>
+                                <th>发布时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="checkbox-col"><input type="checkbox"/></td>
+                                <td class="id-col">128</td>
+                                <td class="title-cell">2026年碳交易市场最新政策解读<span class="top-tag">置顶</span></td>
+                                <td><span class="category-tag policy">政策法规</span></td>
+                                <td><span class="status-tag online">已上线</span></td>
+                                <td>3,256</td>
+                                <td>2026-04-21 09:30</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="btn-link" title="编辑">编辑</button>
+                                        <button class="btn-link" title="取消置顶" style="color: #fa8c16;">取消置顶</button>
+                                        <button class="btn-link" title="下线" style="color: #fa8c16;">下线</button>
+                                        <button class="btn-link danger" title="删除">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="checkbox-col"><input type="checkbox"/></td>
+                                <td class="id-col">127</td>
+                                <td class="title-cell">全国碳市场扩容方案正式发布，钢铁水泥行业纳入</td>
+                                <td><span class="category-tag policy">政策法规</span></td>
+                                <td><span class="status-tag online">已上线</span></td>
+                                <td>2,180</td>
+                                <td>2026-04-20 14:20</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="btn-link">编辑</button>
+                                        <button class="btn-link" style="color: #f5222d;">置顶</button>
+                                        <button class="btn-link" style="color: #fa8c16;">下线</button>
+                                        <button class="btn-link danger">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="checkbox-col"><input type="checkbox"/></td>
+                                <td class="id-col">126</td>
+                                <td class="title-cell">绿色建筑认证标准更新通知</td>
+                                <td><span class="category-tag notice">通知公告</span></td>
+                                <td><span class="status-tag draft">草稿</span></td>
+                                <td>0</td>
+                                <td>2026-04-19 16:45</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="btn-link">编辑</button>
+                                        <button class="btn-link" style="color: #f5222d;">置顶</button>
+                                        <button class="btn-link" style="color: #52c41a;">上线</button>
+                                        <button class="btn-link danger">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="checkbox-col"><input type="checkbox"/></td>
+                                <td class="id-col">125</td>
+                                <td class="title-cell">碳足迹计算工具上线公告</td>
+                                <td><span class="category-tag notice">通知公告</span></td>
+                                <td><span class="status-tag offline">已下线</span></td>
+                                <td>1,420</td>
+                                <td>2026-04-18 11:00</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="btn-link">编辑</button>
+                                        <button class="btn-link" style="color: #f5222d;">置顶</button>
+                                        <button class="btn-link" style="color: #52c41a;">上线</button>
+                                        <button class="btn-link danger">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="checkbox-col"><input type="checkbox"/></td>
+                                <td class="id-col">124</td>
+                                <td class="title-cell">欧盟碳边境调节机制(CBAM)最新进展分析</td>
+                                <td><span class="category-tag industry">行业动态</span></td>
+                                <td><span class="status-tag online">已上线</span></td>
+                                <td>1,856</td>
+                                <td>2026-04-17 09:15</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="btn-link">编辑</button>
+                                        <button class="btn-link" style="color: #f5222d;">置顶</button>
+                                        <button class="btn-link" style="color: #fa8c16;">下线</button>
+                                        <button class="btn-link danger">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="checkbox-col"><input type="checkbox"/></td>
+                                <td class="id-col">123</td>
+                                <td class="title-cell">新型碳捕集技术突破：效率提升40%</td>
+                                <td><span class="category-tag tech">技术前沿</span></td>
+                                <td><span class="status-tag online">已上线</span></td>
+                                <td>2,540</td>
+                                <td>2026-04-16 15:30</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="btn-link">编辑</button>
+                                        <button class="btn-link" style="color: #f5222d;">置顶</button>
+                                        <button class="btn-link" style="color: #fa8c16;">下线</button>
+                                        <button class="btn-link danger">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="checkbox-col"><input type="checkbox"/></td>
+                                <td class="id-col">122</td>
+                                <td class="title-cell">CCER交易市场重启后的机遇与挑战</td>
+                                <td><span class="category-tag industry">行业动态</span></td>
+                                <td><span class="status-tag online">已上线</span></td>
+                                <td>1,923</td>
+                                <td>2026-04-15 10:00</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="btn-link">编辑</button>
+                                        <button class="btn-link" style="color: #f5222d;">置顶</button>
+                                        <button class="btn-link" style="color: #fa8c16;">下线</button>
+                                        <button class="btn-link danger">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="checkbox-col"><input type="checkbox"/></td>
+                                <td class="id-col">121</td>
+                                <td class="title-cell">企业碳中和路径规划指南（2026版）</td>
+                                <td><span class="category-tag tech">技术前沿</span></td>
+                                <td><span class="status-tag draft">草稿</span></td>
+                                <td>0</td>
+                                <td>2026-04-14 17:20</td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="btn-link">编辑</button>
+                                        <button class="btn-link" style="color: #f5222d;">置顶</button>
+                                        <button class="btn-link" style="color: #52c41a;">上线</button>
+                                        <button class="btn-link danger">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div class="pagination-bar">
+                        <div class="pagination-info">共 128 条记录，第 1/16 页</div>
+                        <div class="pagination">
+                            <div class="page-item disabled">&laquo;</div>
+                            <div class="page-item active">1</div>
+                            <div class="page-item">2</div>
+                            <div class="page-item">3</div>
+                            <div class="page-item">4</div>
+                            <div class="page-item">5</div>
+                            <div class="page-item">...</div>
+                            <div class="page-item">16</div>
+                            <div class="page-item">&raquo;</div>
+                            <div class="page-size">
+                                每页
+                                <select>
+                                    <option>8</option>
+                                    <option>15</option>
+                                    <option>30</option>
+                                    <option>50</option>
+                                </select>
+                                条
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirm Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>确认删除</h3>
+                <button class="modal-close" onclick="hideModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="confirm-text">
+                    确定要删除选中的新闻吗？此操作<strong>不可恢复</strong>，删除后数据将无法找回。
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="hideModal()">取消</button>
+                <button class="btn btn-primary" style="background: #f5222d; border-color: #f5222d;" onclick="hideModal()">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 子菜单展开/收起
+        function toggleSubmenu(el) {
+            const submenu = el.nextElementSibling;
+            const isExpanded = el.classList.contains('expanded');
+            document.querySelectorAll('.menu-item.expanded').forEach(item => {
+                item.classList.remove('expanded');
+                if (item.nextElementSibling && item.nextElementSibling.classList.contains('submenu-list')) {
+                    item.nextElementSibling.classList.remove('show');
+                }
+            });
+            if (!isExpanded) {
+                el.classList.add('expanded');
+                if (submenu) submenu.classList.add('show');
+            }
+        }
+
+        // 全选/取消全选
+        function toggleAll(el) {
+            const checkboxes = document.querySelectorAll('.data-table tbody input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = el.checked);
+        }
+
+        // 显示弹窗
+        function showModal(type) {
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        // 隐藏弹窗
+        function hideModal() {
+            document.getElementById('deleteModal').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
